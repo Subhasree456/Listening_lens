@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Listening Lens — privacy-first Spotify listening analytics and prediction dashboard." />
+  <title>Listening Lens — Spotify Analyzer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="bg-orb orb-a"></div><div class="bg-orb orb-b"></div>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="Listening Lens home">
+      <span class="brand-mark">◉</span><span>Listening <b>Lens</b></span>
+    </a>
+    <nav>
+      <button class="nav-btn active" data-view="dashboard">Dashboard</button>
+      <button class="nav-btn" data-view="insights">Insights</button>
+      <button class="nav-btn" data-view="behaviour">Behaviour</button>
+      <button class="nav-btn" data-view="prediction">Prediction</button>
+      <button class="nav-btn" data-view="privacy">Privacy</button>
+    </nav>
+    <div class="header-actions">
+      <button id="connectBtn" class="spotify-btn"><span>●</span> Connect Spotify</button>
+      <button id="themeBtn" class="icon-btn" title="Toggle theme" aria-label="Toggle theme">☼</button>
+    </div>
+  </header>
+
+  <main>
+    <section id="welcome" class="hero">
+      <div class="hero-copy">
+        <span class="eyebrow">PRIVATE BY DESIGN • BEHAVIOR ANALYTICS</span>
+        <h1>Your listening.<br><span>Your patterns.</span></h1>
+        <p>Turn Spotify listening history into an interactive profile, explainable predictions and useful trends — without asking for your password.</p>
+        <div class="hero-actions">
+          <button class="primary" id="demoBtn">Explore demo data <span>→</span></button>
+          <button class="secondary" id="uploadBtn">Upload Spotify history</button>
+        </div>
+        <div class="trust-row"><span>✓ No Spotify password</span><span>✓ Minimal permissions</span><span>✓ Local-first analysis</span></div>
+      </div>
+      <div class="hero-card">
+        <div class="mini-top"><span>DEMO PREVIEW · SAMPLE DATA</span><span class="dot">●</span></div>
+        <div class="preview-title">Your music DNA</div>
+        <div class="dna">
+          <div class="ring"><strong>82</strong><small>Discovery</small></div>
+          <div class="ring"><strong>67</strong><small>Diversity</small></div>
+          <div class="ring"><strong>74</strong><small>Replay</small></div>
+        </div>
+        <div class="preview-row"><span>Next likely genre</span><b>Alternative Pop</b></div>
+        <div class="preview-row"><span>Peak listening</span><b>8:00 PM</b></div>
+      </div>
+    </section>
+
+    <section id="app" class="app-shell hidden">
+      <aside class="sidebar">
+        <div class="profile-mini">
+          <div class="avatar" id="avatar">D</div><div><b id="profileName">Demo Listener</b><span id="profileState">Demo mode · sample data</span></div>
+        </div>
+        <div class="side-label">ANALYZE</div>
+        <button class="side-btn active" data-view="dashboard">⌂ <span>Overview</span></button>
+        <button class="side-btn" data-view="insights">◒ <span>Listening insights</span></button>
+        <button class="side-btn" data-view="behaviour">◆ <span>Behaviour &amp; changes</span></button>
+        <button class="side-btn" data-view="prediction">✦ <span>Predictions</span></button>
+        <div class="side-label">DATA</div>
+        <button class="side-btn" id="uploadSide">⇧ <span>Import history</span></button>
+        <button class="side-btn" id="exportBtn">⇩ <span>Export report</span></button>
+        <div class="sidebar-bottom">
+          <div class="privacy-mini"><span>🔒</span><div><b>Privacy mode</b><small>Raw history stays local</small></div></div>
+        </div>
+      </aside>
+
+      <section class="content">
+        <div class="view dashboard-view" data-panel="dashboard">
+          <div class="page-head"><div><span class="eyebrow">OVERVIEW</span><h2>Good evening, <span id="helloName">Listener</span> 👋</h2><p id="dataSummary">Demo dataset · 1,248 listening events analyzed</p></div><button class="ghost" id="refreshBtn">↻ Refresh analysis</button></div>
+          <div class="stats-grid">
+            <article class="stat"><span>Listening time</span><strong id="statMinutes">83.4h</strong><small id="statMinutesNote">↑ 12% vs previous period (sample)</small></article>
+            <article class="stat"><span>Unique artists</span><strong id="statArtists">184</strong><small id="statArtistsNote">Across 31 genres</small></article>
+            <article class="stat"><span>Top genre</span><strong id="statGenre">Alt Pop</strong><small id="genreDetail">24% of plays (sample)</small></article>
+            <article class="stat"><span>Replay score</span><strong id="statReplay">74<span>/100</span></strong><small id="statReplayNote">Balanced repeat behavior</small></article>
+          </div>
+          <div class="grid-2">
+            <article class="panel chart-panel"><div class="panel-head"><div><h3>Listening activity</h3><span id="activityNote">Plays by day</span></div><select id="rangeSelect"><option value="7">Last 7 days</option><option value="30">Last 30 days</option><option value="183">Last 6 months</option><option value="all">All imported history</option></select></div><div id="activityChart" class="bars" aria-label="Listening activity chart"></div><div class="axis"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div></article>
+            <article class="panel"><div class="panel-head"><div><h3>Top artists</h3><span>Your most played artists</span></div><button class="text-btn" data-view="insights">View all →</button></div><div id="artistList" class="artist-list"></div></article>
+          </div>
+          <div class="grid-3">
+            <article class="panel"><div class="panel-head"><div><h3>Music DNA</h3><span>Behavioral profile</span></div></div><div id="dnaBars"></div></article>
+            <article class="panel"><div class="panel-head"><div><h3>Peak hours</h3><span id="heatNote">When you listen most</span></div></div><div id="heatmap" class="heatmap hm-week"></div><div id="heatAxis" class="hm-axis"></div><div id="heatBands" class="heat-labels"></div></article>
+            <article class="panel prediction-card"><div class="panel-head"><div><h3>Next up</h3><span id="nextCardNote">Model estimate</span></div><span class="confidence" id="nextConfidence">84%</span></div><div class="prediction-main"><span class="spark">✦</span><div><b id="nextGenre">Alternative Pop</b><small id="nextLabel">likely next genre</small></div></div><div class="prediction-foot" id="nextFoot">Based on recent plays, affinity and time-of-day patterns.</div></article>
+          </div>
+          <article class="panel"><div class="panel-head"><div><h3>Data in this session</h3><span id="dataSessionNote">What is loaded right now</span></div><button class="ghost" id="clearDataBtn">Clear imported data</button></div><div id="dataPanel"></div></article>
+        <article class="panel"><div class="panel-head"><div><h3>Selected range</h3><span id="rangeNote">What the range control is showing</span></div></div><div id="rangeSummary" class="facts"></div><p class="empty-state" id="rangeStats"></p></article>
+        </div>
+
+        <div class="view hidden" data-panel="insights">
+          <div class="page-head"><div><span class="eyebrow">INSIGHTS</span><h2>Understand your listening</h2><p>Patterns derived from your imported or connected Spotify activity.</p></div></div>
+          <div class="grid-2">
+            <article class="panel large"><div class="panel-head"><div><h3>Genre distribution</h3><span>Share of analyzed plays</span></div></div><div id="genreChart" class="horizontal-chart"></div></article>
+            <article class="panel large"><div class="panel-head"><div><h3>Listening timeline</h3><span id="timelineNote">Plays by hour of day</span></div></div><div id="timelineChart" class="timeline"></div></article>
+          </div>
+          <div class="grid-2">
+            <article class="panel"><div class="panel-head"><div><h3>Behavior signals</h3><span>Explainable metrics, not personality diagnoses</span></div></div><div id="signals"></div></article>
+            <article class="panel"><div class="panel-head"><div><h3>Track rotation</h3><span>Most repeated tracks</span></div></div><div id="trackList"></div></article>
+          </div>
+        </div>
+
+        <div class="view hidden" data-panel="behaviour">
+          <div class="page-head"><div><span class="eyebrow">LISTENING BEHAVIOUR</span><h2>Behaviour &amp; changes</h2><p id="behaviourSummary">Observations calculated from your listening records.</p></div></div>
+          <div class="grid-2">
+            <article class="panel large"><div class="panel-head"><div><h3>Listening behaviour insights</h3><span id="behaviourNote">Every figure states how it was measured</span></div></div><div id="behaviourInsights" class="insight-list"></div></article>
+            <article class="panel large"><div class="panel-head"><div><h3>Change since the previous period</h3><span id="changeNote">Recent window against the window before it</span></div></div><div id="changePanel"></div></article>
+          </div>
+          <article class="panel"><div class="panel-head"><div><h3>How these are calculated</h3><span>Statistical observations from your own records — never psychological conclusions</span></div></div><div class="steps"><div><b>01</b><strong>Count</strong><span>Plays, artists, tracks, hours and days per period</span></div><div><b>02</b><strong>Compare</strong><span>Two consecutive equal-length windows, like for like</span></div><div><b>03</b><strong>Report</strong><span>Differences are shown only when enough history exists</span></div><div><b>04</b><strong>Explain</strong><span>Each insight names the measurement behind it</span></div></div></article>
+        </div>
+
+        <div class="view hidden" data-panel="prediction">
+          <div class="page-head"><div><span class="eyebrow">PREDICTION ENGINE</span><h2>What might you play next?</h2><p>Frequency-based estimates from your own listening history. There is no trained machine-learning model here, and nothing on this page is a statement about your personality or mental health.</p></div></div>
+          <div class="prediction-hero panel"><div><div class="big-confidence" id="predHero">84%</div><span id="predHeroLabel">demo value · sample data</span></div><div class="pred-main"><span class="eyebrow" id="predGenreLabel">NEXT LIKELY GENRE</span><h3 id="predGenre">Alternative Pop</h3><p id="predMethod">Demo preview values. Your own analysis fills these panels from your own listening data.</p><div class="chips" id="predChips"><span>Sample data</span></div></div></div>
+          <div class="grid-3">
+            <article class="panel pred-box"><span>Next likely artist</span><h3 id="predArtist">The Weeknd</h3><b id="predArtistScore">71%</b><small id="predArtistNote">sample value</small></article>
+            <article class="panel pred-box"><span>Likely listening time</span><h3 id="predHour">8:00–9:00 PM</h3><b id="predHourScore">79%</b><small id="predHourNote">sample value</small></article>
+            <article class="panel pred-box"><span>Discovery chance</span><h3 id="predDiscovery">Medium-high</h3><b id="predDiscoveryScore">68%</b><small id="predDiscoveryNote">sample value</small></article>
+          </div>
+          <article class="panel"><div class="panel-head"><div><h3>How the prediction works</h3><span>Transparent, local-first feature pipeline</span></div></div><div class="steps"><div><b>01</b><strong>Collect</strong><span>Spotify API data or exported history</span></div><div><b>02</b><strong>Sanitize</strong><span>Remove unnecessary identifiers and technical metadata</span></div><div><b>03</b><strong>Extract</strong><span>Genre, time, repeat, artist and transition signals</span></div><div><b>04</b><strong>Estimate</strong><span>Rank likely next behaviours from frequency and recency signals — no trained model</span></div></div></article>
+        </div>
+
+        <div class="view hidden" data-panel="privacy">
+          <div class="page-head"><div><span class="eyebrow">SECURITY CENTER</span><h2>Your data stays yours.</h2><p>The app is designed around least privilege and local-first analysis.</p></div></div>
+          <div class="security-grid">
+            <article class="security-card good"><span class="security-icon">🔐</span><h3>OAuth, never passwords</h3><p>When Spotify integration is enabled, authentication happens on Spotify. Your Spotify password is never entered into this app.</p><b>Protected</b></article>
+            <article class="security-card good"><span class="security-icon">🧩</span><h3>Minimal permissions</h3><p>Request only the Spotify scopes needed for analytics, such as top items and recently played data. Email access is not required for analysis.</p><b>Least privilege</b></article>
+            <article class="security-card good"><span class="security-icon">🧹</span><h3>Data minimization</h3><p>For exported history, the analyzer can ignore IP address, user agent and other technical fields and retain only analysis features.</p><b>Minimized</b></article>
+            <article class="security-card good"><span class="security-icon">🗑</span><h3>Disconnect & delete</h3><p>Use disconnect to clear the local session. Imported history can be discarded without sending it to a third party.</p><b>User controlled</b></article>
+          </div>
+          <article class="panel privacy-flow"><div class="panel-head"><div><h3>Recommended secure architecture</h3><span>For the production Spotify connector</span></div></div><div class="flow"><span>Your browser</span><i>→</i><span>Spotify OAuth + PKCE</span><i>→</i><span>Minimal API data</span><i>→</i><span>Sanitizer</span><i>→</i><span>Prediction</span><i>→</i><span>Dashboard</span></div></article>
+          <article class="panel"><div class="panel-head"><div><h3>What this app currently holds</h3><span id="privacySource">Reading current configuration…</span></div></div><div id="privacyFacts" class="facts"></div></article>
+          <article class="panel"><div class="panel-head"><div><h3>Configuration checks</h3><span id="privacyCheckSummary"></span></div></div><div id="privacyChecks" class="checks"></div></article>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <input id="fileInput" type="file" accept=".json,.csv" hidden />
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="core.js"></script>
+  <script src="normalize.js"></script>
+  <script src="analytics.js"></script>
+  <script src="changes.js"></script>
+  <script src="insights.js"></script>
+  <script src="privacy.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

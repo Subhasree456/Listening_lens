@@ -1,0 +1,36 @@
+# ---------------------------------------------------------------
+# Listening Lens — never commit secrets or personal listening data
+# ---------------------------------------------------------------
+
+# Environment / credentials (server-side only). Keep the example file.
+.env
+.env.*
+!.env.example
+server/.env
+server/.env.*
+
+# Dependencies
+node_modules/
+vendor/
+
+# Build / cache output
+dist/
+build/
+.cache/
+coverage/
+
+# Local exports and personal Spotify history
+Streaming_History_*.json
+StreamingHistory*.json
+my-*.json
+my-*.csv
+*.local.json
+*.local.csv
+
+# Editor / OS noise
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.log
+npm-debug.log*
